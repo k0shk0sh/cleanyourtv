@@ -45,9 +45,6 @@ public class HomeKeyService extends AccessibilityService {
     private Map<Integer, String> holdAppKeys = Collections.emptyMap();
     private Map<Integer, String> holdAppScancodes = Collections.emptyMap();
 
-    /** Steps the volume while a volume key is held (config.xml volume_ramp); null when off. */
-    private VolumeRamp volumeRamp;
-
     /** Waits for the user to unlock when Android binds this service at boot; null once the config is read. */
     private BroadcastReceiver unlockReceiver;
     /** The stock launcher's HOME activities (stock_home_redirect), disabled ones included. */
@@ -57,7 +54,6 @@ public class HomeKeyService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         settingsScancodes = getResources().getIntArray(R.array.settings_key_scancodes);
-        if (getResources().getBoolean(R.bool.volume_ramp)) volumeRamp = new VolumeRamp(this);
         // The service is directBootAware: Android 11 skips a service that is not while the user is still
         // locked at boot, writes accessibility_enabled=0 and, on TCL G03 firmware, never binds it after the
         // unlock. Config.load reads credential-protected storage, so wait for the unlock before reading it.
@@ -90,7 +86,6 @@ public class HomeKeyService extends AccessibilityService {
     @Override
     public void onDestroy() {
         stopWaitingForUnlock();
-        if (volumeRamp != null) volumeRamp.stop();
         super.onDestroy();
     }
 
@@ -126,7 +121,6 @@ public class HomeKeyService extends AccessibilityService {
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
-        if (volumeRamp != null) volumeRamp.onKey(event);
         // A scancode entry is more specific than any keycode, so it goes first.
         if (RemoteKeys.handle(this, event, appScancodes.get(event.getScanCode()),
                 holdAppScancodes.get(event.getScanCode()))) return true;

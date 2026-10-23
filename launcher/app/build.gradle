@@ -40,6 +40,18 @@ android {
     }
 }
 
+// Themes from the repo's themes/ folder, bundled so the Settings pill's Themes menu can apply them on the TV.
+// Screenshots and the README stay out of the APK; default is the built-in look and dussehra has ended.
+def themeAssets = layout.buildDirectory.dir('themeAssets')
+def copyThemes = tasks.register('copyThemes', Copy) {
+    from(rootProject.file('../themes')) {
+        exclude '**/screenshot.jpg', 'README.md', 'default/**', 'dussehra/**'
+    }
+    into(themeAssets.map { it.dir('themes') })
+}
+android.sourceSets.main.assets.srcDir(themeAssets)
+tasks.named('preBuild') { dependsOn copyThemes }
+
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'

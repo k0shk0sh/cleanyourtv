@@ -144,6 +144,14 @@
          `pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS`. config.xml only. -->
     <integer name="keep_attentive_timeout_ms">3600000</integer>
 
+    <!-- Dim screen's night schedule (DimService, DimSchedule): dim_night_level percent (30 to 90) from dim_night_start
+         until dim_night_end, Off the rest of the day, both in minutes after midnight. A level picked under the Settings
+         pill's menu holds until the next switch time. dim_night_level 0 turns the schedule off (manual only).
+         Needs the WRITE_SECURE_SETTINGS grant. config.xml only. -->
+    <integer name="dim_night_start_minutes">1260</integer>   <!-- 21:00 -->
+    <integer name="dim_night_end_minutes">420</integer>      <!-- 07:00 -->
+    <integer name="dim_night_level">70</integer>
+
     <!-- More remote buttons that open the input switcher, by Android keycode (INPUT_KEY_SERVICE=1
          build-and-install.sh; KEYCODE_TV always does). For buttons only a disabled app answered: the Xiaomi
          MiTV-AXFR2 remote's PatchWall button is 192 (KEYCODE_BUTTON_5). `dumpsys window policy` lists which

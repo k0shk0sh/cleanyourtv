@@ -353,6 +353,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (cfg.restoreKeyServices) ServiceRepair.restore(this);
         // keep_attentive_timeout_ms: undo the firmware's reset of "turn off while watching" at boot.
         AttentiveTimeout.keep(this);
+        // dim_night_*: the dimmer must run to follow its schedule before anyone opens Dim screen.
+        DimService.keepScheduled(this);
         settingsRevision = settingsRevision();
         applyViewInputsHandler(cfg.handleViewInputs);
         settingsKeycodes = cfg.settingsKeycodes;

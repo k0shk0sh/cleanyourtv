@@ -2890,6 +2890,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (dockRow) addSettingsMenuRow(rows, popup, R.string.dock_edit, this::startDockEdit);
         addSettingsMenuRow(rows, popup, R.string.reorder, this::toggleReorder);
         if (BundledThemes.available(this)) addSettingsMenuRow(rows, popup, R.string.themes, this::showThemes);
+        addSettingsMenuRow(rows, popup, R.string.dim_screen, this::showDim);
         panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popup.setWidth(Math.max((int) (200 * density), panel.getMeasuredWidth()));
         // Hebrew puts Settings at the left of the header: grow the menu inward from it.
@@ -2967,6 +2968,27 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         dropIn(popup, panel, anchor, getResources().getBoolean(R.bool.rtl_menu_bar)
                 ? Gravity.START : Gravity.END);
         rows.getChildAt(0).requestFocus();
+    }
+
+    /** Dim screen levels under the Settings pill's menu; the current one is marked and focused. */
+    private void showDim() {
+        View anchor = findViewById(R.id.btnSettings);
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        PopupWindow popup = glassPopup(panel, (int) (200 * density));
+        int current = DimService.level(this), focus = 0;
+        for (int level : DimService.LEVELS) {
+            String label = level == 0 ? getString(R.string.dim_off) : getString(R.string.dim_level, level);
+            if (level == current) focus = rows.getChildCount();
+            addSettingsMenuRow(rows, popup, (level == current ? "✓  " : "     ") + label, () -> {
+                if (!DimService.set(this, level)) Toast.makeText(this, R.string.dim_failed, Toast.LENGTH_LONG).show();
+            });
+        }
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (200 * density), panel.getMeasuredWidth()));
+        dropIn(popup, panel, anchor, getResources().getBoolean(R.bool.rtl_menu_bar)
+                ? Gravity.START : Gravity.END);
+        rows.getChildAt(focus).requestFocus();
     }
 
     private void applyTheme(String name) {

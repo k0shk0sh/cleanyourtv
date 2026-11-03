@@ -99,6 +99,11 @@
     <string name="reorder">Reorder apps</string>
     <string name="themes">Themes</string>
     <string name="theme_builtin">Built-in look</string>
+    <string name="dim_screen">Dim screen</string>
+    <string name="dim_off">Off</string>
+    <string name="dim_level">%d%%</string>
+    <string name="dim_failed">Could not dim: grant WRITE_SECURE_SETTINGS over adb</string>
+    <string name="dim_service_description">Dims the whole screen when Dim screen is on in the launcher.</string>
     <string name="theme_failed">Could not apply the theme</string>
     <string name="tile_move">Move</string>
     <string name="reorder_hint">OK picks up an app, arrows move it, Back places it. Back again to finish.</string>

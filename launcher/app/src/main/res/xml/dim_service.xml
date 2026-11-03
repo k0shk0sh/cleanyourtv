@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Draws the dimming layer only: no event types (0) and no key filtering, so the system never calls into the
+     launcher for events and held volume keeps ramping (a key filter stops it on Philips). -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:description="@string/dim_service_description" />
